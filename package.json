@@ -1,6 +1,6 @@
 {
   "name": "jsincss-auto-expand",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "An auto-expand plugin for jsincss",
   "main": "index.js",
   "scripts": {
