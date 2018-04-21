@@ -1,4 +1,4 @@
-module.exports = (selector, option) => {
+export default (selector, option) => {
 
   const features = {
      width: tag => {

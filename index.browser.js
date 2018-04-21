@@ -1,4 +1,4 @@
-module.exports = (selector, option) => {
+function expand(selector, option) {
 
   const features = {
      width: tag => {
