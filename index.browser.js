@@ -33,7 +33,6 @@ function expand(selector, option) {
     .reduce((styles, tag, count) => {
 
       const evaluated = features[option](tag)
-
       const attr = selector.replace(/\W/g, '')
 
       tag.setAttribute(`data-expand-${attr}`, count)

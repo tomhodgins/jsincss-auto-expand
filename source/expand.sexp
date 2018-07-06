@@ -28,7 +28,7 @@ mixin('expand', ['selector', 'option'],
   }\n\n',
   returnValue('Array.from(document.querySelectorAll(selector))',
     reduceFunc(
-      prelude('      const evaluated = features[option](tag)\n\n',
+      prelude('      const evaluated = features[option](tag)\n',
         createAttribute(['selector'],
           addAttribute('tag', 'expand',
             addRule('${selector}', '', 'expand', '${evaluated}'))))))))
