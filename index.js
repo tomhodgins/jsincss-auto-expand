@@ -37,8 +37,6 @@ module.exports = (selector, option) => {
 
       tag.setAttribute(`data-expand-${attr}`, count)
       styles += `${selector}[data-expand-${attr}="${count}"] { ${evaluated} }\n`
-      count++
-
       return styles
 
     }, '')
