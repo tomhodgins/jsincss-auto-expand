@@ -1,44 +1,38 @@
 function expand(selector, option) {
-
+  const attr = (selector + option).replace(/\W/g, '')
   const features = {
-     width: tag => {
-       const computed = getComputedStyle(tag)
-       tag.style.width = 'inherit'
-       const width = parseInt(computed.getPropertyValue('border-left-width'), 10)
-         + parseInt(computed.getPropertyValue('padding-left'), 10)
-         + tag.scrollWidth
-         + parseInt(computed.getPropertyValue('padding-right'), 10)
-         + parseInt(computed.getPropertyValue('border-right-width'), 10)
-       tag.style.width = ''
-       return `width: ${width}px;`
-     },
-     height: tag => {
-       const computed = getComputedStyle(tag)
-       tag.style.height = 'inherit'
-       const height = parseInt(computed.getPropertyValue('border-top-width'), 10)
-         + parseInt(computed.getPropertyValue('padding-top'), 10)
-         + tag.scrollHeight
-         + parseInt(computed.getPropertyValue('padding-bottom'), 10)
-         + parseInt(computed.getPropertyValue('border-bottom-width'), 10)
-       tag.style.height = ''
-       return `height: ${height}px;`
-     },
-     both: tag => {
-       return features.width(tag) + features.height(tag)
-     }
-   }
-
-  return Array.from(document.querySelectorAll(selector))
-
-    .reduce((styles, tag, count) => {
-
+    width: tag => {
+      const computed = getComputedStyle(tag)
+      tag.style.width = 'inherit'
+      const width = parseInt(computed['border-left-width'])
+      + parseInt(computed['padding-left'])
+      + tag.scrollWidth
+      + parseInt(computed['padding-right'])
+      + parseInt(computed['border-right-width'])
+      tag.style.width = ''
+      return `width: ${width}px;`
+    },
+    height: tag => {
+      const computed = getComputedStyle(tag)
+      tag.style.height = 'inherit'
+      const height = parseInt(computed['border-top-width'])
+      + parseInt(computed['padding-top'])
+      + tag.scrollHeight
+      + parseInt(computed['padding-bottom'])
+      + parseInt(computed['border-bottom-width'])
+      tag.style.height = ''
+      return `height: ${height}px;`
+    },
+    both: tag => features.width(tag) + features.height(tag)
+  }
+  const result = Array.from(document.querySelectorAll(selector))
+    .reduce((output, tag, count) => {
       const evaluated = features[option](tag)
-      const attr = selector.replace(/\W/g, '')
-
-      tag.setAttribute(`data-expand-${attr}`, count)
-      styles += `${selector}[data-expand-${attr}="${count}"] { ${evaluated} }\n`
-      return styles
-
-    }, '')
-
+      output.add.push({tag: tag, count: count})
+      output.styles.push(`${selector}[data-expand-${attr}="${count}"] { ${evaluated} }`)
+      return output
+    }, {add: [], remove: [], styles: []})
+  result.add.forEach(tag => tag.tag.setAttribute(`data-expand-${attr}`, tag.count))
+  result.remove.forEach(tag => tag.setAttribute(`data-expand-${attr}`, ''))
+  return result.styles.join('\n')
 }
